@@ -1,4 +1,7 @@
-from cfg import names
+import csv
+import re
+
+from cfg import grcols
 
 
 def get_all_instances(rows, key):
@@ -18,7 +21,41 @@ def sum_by_coin(rows):
     rows: list of dicts
     Returns the sum of changes for each coin (coin->sum)
     '''
-    sums = {coin: 0.0 for coin in get_all_instances(rows, names["coin"])}
+    sums = {coin: 0.0 for coin in get_all_instances(rows, grcols["coin"])}
     for row in rows:
-        sums[row[names["coin"]]] += float(row[names["change"]])
+        sums[row[grcols["coin"]]] += float(row[grcols["change"]])
     return sums
+
+
+def weighted_average(rows, weight_key, target_key):
+    tsum = 0
+    wsum = 0
+    for row in rows:
+        weight = float(remove_non_float_chars(row[weight_key]))
+        tsum += float(row[target_key]) * weight
+        wsum += weight
+    return tsum/wsum
+
+
+def remove_non_float_chars(str):
+    return re.sub("[^0-9^\.]", "", str)
+
+
+def filter_by_kv(rows, key, value):
+    '''
+    rows: list of dicts.
+    Returns the items of the list that have <value> in <key>
+    '''
+    return [row for row in rows if row[key] == value]
+
+
+def load_csv(filename):
+    '''
+    Returns all lines of a csv (with header) as a list of dicts
+    '''
+    rows = []
+    with open(filename) as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            rows.append(row)
+    return rows
