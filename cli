@@ -11,26 +11,47 @@ import os
 import sys
 from pprint import pprint
 
+import util
+from cfg import names
 
-def get_all_instances(rows, key):
-    instances = set()
-    for row in rows:
-        instances.update([row[key]])
-    return list(instances)
+
+def print_fees(rows):
+    fee_op = "Fee"
+    fee_rows = [row for row in rows if row[names["operation"]] == fee_op]
+    print("---- Fees ----")
+    pprint(util.sum_by_coin(fee_rows))
 
 
 def main():
+    # In case they change down the line
+
     file = "report.csv"
     rows = []
     with open(file) as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
             rows.append(row)
-    pprint(rows)
-    accounts = get_all_instances(rows, "Account")
-    coins = get_all_instances(rows, "Coin")
-    print(accounts)
-    print(coins)
+    accounts = util.get_all_instances(rows, names["account"])
+    coins = util.get_all_instances(rows, names["coin"])
+    ops = util.get_all_instances(rows, names["operation"])
+
+    risk_free_coins = ["EUR", "BUSD", "USDT", "USDC"]
+    rf_rows = [row for row in rows if row[names["coin"]] in risk_free_coins]
+
+    interest_op = "Savings Interest"
+    rf_interest_rows = [
+        row for row in rows if row[names["operation"]] == interest_op]
+
+    sell_op = "Sell"
+    rf_sell_rows = [row for row in rows if row[names["operation"]] == sell_op]
+    # pprint(rf_sell_rows)
+
+    print_fees(rows)
+
+    print("\n\n ---- Info ----")
+    print(f"All accounts: {accounts}")
+    print(f"All coins: {coins}")
+    print(f"All ops: {ops}")
 
 
 if __name__ == "__main__":
