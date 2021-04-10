@@ -11,59 +11,33 @@ import sys
 from pprint import pprint
 
 import util
-from cfg import grcols, thcols
+import trade_processor as tradep
+import transaction_processor as transp
+from cfg import trcols, tdcols
 
 
-def print_fees(rows):
-    fee_op = "Fee"
-    fee_rows = [row for row in rows if row[grcols["operation"]] == fee_op]
-    print("---- Fees ----")
-    pprint(util.sum_by_coin(fee_rows))
-
-
-def process_trade_history():
-    file = "trade_history.csv"
-    rows = util.load_csv(file)
-
-    pairs = util.get_all_instances(rows, thcols["pair"])
-
-    print(f"All pairs: {pairs}")
-
-    tmp = util.filter_by_kv(rows, thcols["pair"], 'EURBUSD')
-    tmp = util.filter_by_kv(tmp, thcols["side"], "SELL")
-    avg_eur_busd = util.weighted_average(
-        tmp, thcols["executed"], thcols["price"])
-    print(f"Average EUR/BUSD buy price: {avg_eur_busd}")
+def print_results(res, print_info=True):
+    print("================= RESULTS =================")
+    for res_key in res:
+        print(f"\n\n>>>>>>>> {res_key} <<<<<<<<\n")
+        for data_key in res[res_key]:
+            if data_key != "info" or print_info:
+                print(f">> {data_key}")
+                pprint(res[res_key][data_key])
 
 
 def main():
-    # In case they change down the line
+    # TODO: CLI args
+    transaction_filepath = "transaction_history.csv"
+    order_filepath = "order_history.csv"
+    trade_filepath = "trade_history.csv"
+    print_info = True
 
-    file = "report.csv"
-    rows = util.load_csv(file)
-    accounts = util.get_all_instances(rows, grcols["account"])
-    coins = util.get_all_instances(rows, grcols["coin"])
-    ops = util.get_all_instances(rows, grcols["operation"])
-
-    risk_free_coins = ["EUR", "BUSD", "USDT", "USDC"]
-    rf_rows = [row for row in rows if row[grcols["coin"]] in risk_free_coins]
-
-    interest_op = "Savings Interest"
-    rf_interest_rows = [
-        row for row in rows if row[grcols["operation"]] == interest_op]
-
-    sell_op = "Sell"
-    rf_sell_rows = [row for row in rows if row[grcols["operation"]] == sell_op]
-    # pprint(rf_sell_rows)
-
-    print_fees(rows)
-
-    print("\n\n ---- Info ----")
-    print(f"All accounts: {accounts}")
-    print(f"All coins: {coins}")
-    print(f"All ops: {ops}")
-
-    process_trade_history()
+    results = {}
+    results["Transaction History"] = transp.process_transaction_history(
+        transaction_filepath)
+    results["Trade History"] = tradep.process_trade_history(trade_filepath)
+    print_results(results, print_info=print_info)
 
 
 if __name__ == "__main__":

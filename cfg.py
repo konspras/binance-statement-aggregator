@@ -1,5 +1,5 @@
-# general report colulmns
-grcols = {"account": "Account",
+# transaction history colulmns
+trcols = {"account": "Account",
           "change": "Change",
           "coin": "Coin",
           "operation": "Operation",
@@ -8,10 +8,12 @@ grcols = {"account": "Account",
           }
 
 # trade history cols
-thcols = {"amount": "Amount",
+tdcols = {"amount": "Amount",
           "executed": "Executed",
           "fee": "Fee",
           "pair": "Pair",
           "price": "Price",
           "side": "Side",
           "date": "\ufeffDate(UTC)"}  # tf?
+
+risk_free_coins = ["EUR", "BUSD", "USDT", "USDC"]

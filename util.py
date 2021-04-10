@@ -1,7 +1,7 @@
 import csv
 import re
 
-from cfg import grcols
+from cfg import trcols
 
 
 def get_all_instances(rows, key):
@@ -21,9 +21,9 @@ def sum_by_coin(rows):
     rows: list of dicts
     Returns the sum of changes for each coin (coin->sum)
     '''
-    sums = {coin: 0.0 for coin in get_all_instances(rows, grcols["coin"])}
+    sums = {coin: 0.0 for coin in get_all_instances(rows, trcols["coin"])}
     for row in rows:
-        sums[row[grcols["coin"]]] += float(row[grcols["change"]])
+        sums[row[trcols["coin"]]] += float(row[trcols["change"]])
     return sums
 
 
