@@ -1,5 +1,7 @@
 import csv
 import re
+from datetime import datetime
+from dateutil import parser
 
 from cfg import trcols
 
@@ -14,6 +16,22 @@ def get_all_instances(rows, key):
     for row in rows:
         instances.update([row[key]])
     return list(instances)
+
+
+def group_by_month(rows, datecol):
+    '''
+    Expects a list of dicts. The dicts must include a date column (datecol)
+    Returns a dict of list of dicts keyed by month (month/year -> [entry])
+    '''
+    res = dict()
+    for row in rows:
+        date = parser.parse(row[datecol])
+        key = f"{date.month}/{date.year}"
+        if key in res:
+            res[key].append(row)
+        else:
+            res[key] = [row]
+    return res
 
 
 def sum_by_coin(rows):

@@ -16,28 +16,49 @@ import transaction_processor as transp
 from cfg import trcols, tdcols
 
 
-def print_results(res, print_info=True):
-    print("================= RESULTS =================")
+def print_monthly_results(res):
+    print("\n================= RESULTS =================")
+    for res_key in res:
+        print(f"\n\n>>>>>>>> {res_key} <<<<<<<<")
+        for month in res[res_key]:
+            print(f"\n>>>>>> {month}")
+            for data_key in res[res_key][month]:
+                values = res[res_key][month][data_key]
+                if len(values) > 0:
+                    print(f">> {data_key}")
+                    pprint(values)
+
+
+def print_info(res):
+    print(f"\n~~~~~~~~~~~~~~~ INFO ~~~~~~~~~~~~~~~")
     for res_key in res:
         print(f"\n\n>>>>>>>> {res_key} <<<<<<<<\n")
-        for data_key in res[res_key]:
-            if data_key != "info" or print_info:
-                print(f">> {data_key}")
-                pprint(res[res_key][data_key])
+        for info_key in res[res_key]:
+            print(f">> {info_key}")
+            print(res[res_key][info_key])
 
+# def aggregate_monthly_results(monthly_results):
+#     '''
+#     Expects a dictionary keyed by month. Each value is a dictionary keyed by 
 
 def main():
     # TODO: CLI args
-    transaction_filepath = "transaction_history.csv"
+    transaction_filepath = "transaction_history_2.csv"
     order_filepath = "order_history.csv"
     trade_filepath = "trade_history.csv"
-    print_info = True
+    do_print_info = True
 
+    monthly_results = {}
     results = {}
-    results["Transaction History"] = transp.process_transaction_history(
+    info = {}
+    monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
+        trade_filepath)
+    monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
         transaction_filepath)
-    results["Trade History"] = tradep.process_trade_history(trade_filepath)
-    print_results(results, print_info=print_info)
+
+    if do_print_info:
+        print_info(info)
+    print_monthly_results(monthly_results)
 
 
 if __name__ == "__main__":
