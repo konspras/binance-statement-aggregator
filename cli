@@ -51,10 +51,11 @@ def main():
     monthly_results = {}
     results = {}
     info = {}
-    monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
-        trade_filepath)
     monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
         transaction_filepath)
+    monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
+        trade_filepath, info["Transaction History"]["Coins"])
+    
 
     if do_print_info:
         print_info(info)

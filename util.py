@@ -55,6 +55,33 @@ def weighted_average(rows, weight_key, target_key):
     return tsum/wsum
 
 
+def split_coin_pair(pair, possible_coins):
+    first, second = "", ""
+    found = False
+    for pcoin in possible_coins:
+        if pcoin in pair:
+            found = True
+            f, s = pair.split(pcoin)
+            if f:
+                first = f
+                second = pcoin
+            else:
+                first = pcoin
+                second = s
+            break
+
+    # Sanity check
+    if (first not in possible_coins) or (second not in possible_coins):
+        raise Exception(
+            f"'{first}' or '{second}' not in list {possible_coins}")
+
+    if found:
+        return first, second
+    else:
+        raise Exception(
+            f"Could not split pair {pair} using coins {possible_coins}")
+
+
 def remove_non_float_chars(str):
     return re.sub("[^0-9^\.]", "", str)
 

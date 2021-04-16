@@ -4,7 +4,7 @@ import util
 from cfg import tdcols
 
 
-def process_trade_history(filepath):
+def process_trade_history(filepath, coins):
     res = {}
     info = {}
     rows = util.load_csv(filepath)
@@ -31,4 +31,5 @@ def process_trade_history(filepath):
                     buy_pair_rows, tdcols["executed"], tdcols["price"])
             res[month]["Mean Buy Price"] = avg_price
 
+    pprint(res)
     return res, info
