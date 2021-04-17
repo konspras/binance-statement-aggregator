@@ -2,6 +2,7 @@ import csv
 import re
 from datetime import datetime
 from dateutil import parser
+from model import FlowEvent
 
 from cfg import trcols
 
@@ -53,6 +54,10 @@ def weighted_average(rows, weight_key, target_key):
         tsum += float(row[target_key]) * weight
         wsum += weight
     return tsum/wsum
+
+
+def sort_flow_events(flow_events):
+    flow_events.sort(key=lambda event: event.date)
 
 
 def split_coin_pair(pair, possible_coins):

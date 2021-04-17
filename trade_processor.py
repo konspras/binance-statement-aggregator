@@ -1,14 +1,41 @@
 from pprint import pprint
-
+from dateutil import parser
 import util
+from model import FlowEvent
 from cfg import tdcols
+
+
+def extract_flow_events(rows, coins):
+    res = []
+    for row in rows:
+        date = parser.parse(row[tdcols["date"]])
+        coin1, coin2 = util.split_coin_pair(row[tdcols["pair"]], coins)
+        coin1_volume = util.remove_non_float_chars(row[tdcols["executed"]])
+        coin2_volume = util.remove_non_float_chars(row[tdcols["amount"]])
+        op = row[tdcols["side"]]
+        if op == "SELL":
+            sell_asset = coin1
+            buy_asset = coin2
+            sell_volume = coin1_volume
+            buy_volume = coin2_volume
+        elif op == "BUY":
+            sell_asset = coin2
+            buy_asset = coin1
+            sell_volume = coin2_volume
+            buy_volume = coin1_volume
+        else:
+            raise Exception(f"Unknown operation type {op}")
+        res.append(FlowEvent(date, buy_asset,
+                             sell_asset, buy_volume, sell_volume))
+    return res
 
 
 def process_trade_history(filepath, coins):
     res = {}
     info = {}
     rows = util.load_csv(filepath)
-    pprint(rows)
+
+    flow_events = extract_flow_events(rows, coins)
     pairs = util.get_all_instances(rows, tdcols["pair"])
     info["Pairs"] = pairs
 
@@ -31,5 +58,4 @@ def process_trade_history(filepath, coins):
                     buy_pair_rows, tdcols["executed"], tdcols["price"])
             res[month]["Mean Buy Price"] = avg_price
 
-    pprint(res)
-    return res, info
+    return flow_events, res, info

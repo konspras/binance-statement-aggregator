@@ -14,6 +14,7 @@ import util
 import trade_processor as tradep
 import transaction_processor as transp
 from cfg import trcols, tdcols
+from model import PortfolioState, Position, FlowEvent
 
 
 def print_monthly_results(res):
@@ -37,9 +38,14 @@ def print_info(res):
             print(f">> {info_key}")
             print(res[res_key][info_key])
 
-# def aggregate_monthly_results(monthly_results):
-#     '''
-#     Expects a dictionary keyed by month. Each value is a dictionary keyed by 
+
+def create_portfolio_state(flow_events):
+    ps = PortfolioState()
+    for event in flow_events:
+        ps.add_trade(event)
+
+    print(ps)
+
 
 def main():
     # TODO: CLI args
@@ -48,14 +54,20 @@ def main():
     trade_filepath = "trade_history.csv"
     do_print_info = True
 
+    flow_events = []
     monthly_results = {}
     results = {}
     info = {}
     monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
         transaction_filepath)
-    monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
+    trade_fe, monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
         trade_filepath, info["Transaction History"]["Coins"])
-    
+
+    flow_events += trade_fe
+    util.sort_flow_events(flow_events)
+    for ev in flow_events:
+        print(ev)
+    create_portfolio_state(flow_events)
 
     if do_print_info:
         print_info(info)
