@@ -2,7 +2,6 @@ import csv
 import re
 from datetime import datetime
 from dateutil import parser
-from model import FlowEvent
 
 from cfg import trcols
 
@@ -26,8 +25,7 @@ def group_by_month(rows, datecol):
     '''
     res = dict()
     for row in rows:
-        date = parser.parse(row[datecol])
-        key = f"{date.month}/{date.year}"
+        key = get_month_year(row[datecol])
         if key in res:
             res[key].append(row)
         else:
@@ -54,6 +52,16 @@ def weighted_average(rows, weight_key, target_key):
         tsum += float(row[target_key]) * weight
         wsum += weight
     return tsum/wsum
+
+
+def get_month_year(date):
+    '''
+    Expects a date in string format  or datetime and returns
+    <month>/<year> as xx/yyyy
+    '''
+    if not isinstance(date, datetime):
+        date = parser.parse(date)
+    return f"{date.month}/{date.year}"
 
 
 def sort_flow_events(flow_events):
@@ -89,6 +97,10 @@ def split_coin_pair(pair, possible_coins):
 
 def remove_non_float_chars(str):
     return re.sub("[^0-9^\.]", "", str)
+
+
+def remove_float_chars(str):
+    return re.sub("[0-9\.]", "", str)
 
 
 def filter_by_kv(rows, key, value):

@@ -16,4 +16,4 @@ tdcols = {"amount": "Amount",
           "side": "Side",
           "date": "\ufeffDate(UTC)"}  # tf?
 
-risk_free_coins = ["EUR", "BUSD", "USDT", "USDC"]
+base_coins = ["EUR", "BUSD", "USDT", "USDC"]

@@ -2,7 +2,7 @@ from pprint import pprint
 import datetime
 
 import util
-from cfg import trcols, risk_free_coins
+from cfg import trcols, base_coins
 
 
 def calculate_sum_by_op(rows, op):

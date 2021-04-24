@@ -8,25 +8,31 @@ from cfg import tdcols
 def extract_flow_events(rows, coins):
     res = []
     for row in rows:
+        print(row)
         date = parser.parse(row[tdcols["date"]])
         coin1, coin2 = util.split_coin_pair(row[tdcols["pair"]], coins)
-        coin1_volume = util.remove_non_float_chars(row[tdcols["executed"]])
-        coin2_volume = util.remove_non_float_chars(row[tdcols["amount"]])
+        coin1_amount = util.remove_non_float_chars(row[tdcols["executed"]])
+        coin2_amount = util.remove_non_float_chars(row[tdcols["amount"]])
         op = row[tdcols["side"]]
         if op == "SELL":
             sell_asset = coin1
             buy_asset = coin2
-            sell_volume = coin1_volume
-            buy_volume = coin2_volume
+            sell_amount = coin1_amount
+            buy_amount = coin2_amount
         elif op == "BUY":
             sell_asset = coin2
             buy_asset = coin1
-            sell_volume = coin2_volume
-            buy_volume = coin1_volume
+            sell_amount = coin2_amount
+            buy_amount = coin1_amount
         else:
             raise Exception(f"Unknown operation type {op}")
+
+        fee_asset = util.remove_float_chars(row[tdcols["fee"]])
+        if fee_asset not in coins:
+            raise Exception(f"Fee coin {fee_asset} is not in {coins}")
+        fee_amount = util.remove_non_float_chars(row[tdcols["fee"]])
         res.append(FlowEvent(date, buy_asset,
-                             sell_asset, buy_volume, sell_volume))
+                             sell_asset, fee_asset, buy_amount, sell_amount, fee_amount))
     return res
 
 

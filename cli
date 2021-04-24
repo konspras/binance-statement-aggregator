@@ -46,12 +46,16 @@ def create_portfolio_state(flow_events):
 
     print(ps)
 
+# Profit by month in Portfolio state? Or Use a containgg class/code to extract per month
+# stats as the data is fed? Maybe the Position can split profits and fees by month and then
+# provide methods to get ether monthly or aggregate views... Makes sense.
+
 
 def main():
     # TODO: CLI args
     transaction_filepath = "transaction_history_2.csv"
     order_filepath = "order_history.csv"
-    trade_filepath = "trade_history.csv"
+    trade_filepath = "trade_history_fake.csv"
     do_print_info = True
 
     flow_events = []
