@@ -1,8 +1,10 @@
 from pprint import pprint
 import datetime
+from dateutil import parser
 
 import util
 from cfg import trcols, base_coins
+from model import FlowEvent
 
 
 def calculate_sum_by_op(rows, op):
@@ -22,6 +24,32 @@ def add_to_coin_value(op_to_coin, op, coin, value):
     else:
         op_to_coin[op] = dict()
         op_to_coin[op][coin] = value
+
+
+def extract_flow_events(rows, coins, known_ops):
+    res = []
+    for row in rows:
+        date = parser.parse(row[trcols["date"]])
+        coin = row[trcols["coin"]]
+        op = row[trcols["operation"]]
+        change = row[trcols["change"]]
+        flow_event = None
+        # TODO: ignoring transaction related. Eur to BUSD coversion totals will
+        # not be the same in portfolio state as they are in the transaction proc results.
+
+        # Not counting sell, buy and fee twice
+        interest_ops = ["Launchpool Interest",
+                        "Savings Interest", "POS savings interest", "Commission History"]
+        if op in interest_ops:
+            flow_event = FlowEvent(date, coin,
+                                   None, None, change, 0, 0)
+        else:
+            if op not in known_ops:
+                raise Exception(f"Operation {op} not in known ops. Adapt code")
+        if flow_event:
+            res.append(flow_event)
+
+    return res
 
 
 def process_transaction_history(filepath):
@@ -61,4 +89,11 @@ def process_transaction_history(filepath):
         result[month] = dict()
         for op in returned_ops:
             result[month][op] = res[month][op]
-    return result, info
+
+    known_ops = returned_ops.copy()
+    known_ops.append("Savings purchase")
+    known_ops.append("Transaction Related")
+    known_ops.append("Savings Principal redemption")
+    known_ops.append("POS savings purchase")
+    flow_events = extract_flow_events(rows, coins, known_ops)
+    return flow_events, result, info

@@ -8,7 +8,6 @@ from cfg import tdcols
 def extract_flow_events(rows, coins):
     res = []
     for row in rows:
-        print(row)
         date = parser.parse(row[tdcols["date"]])
         coin1, coin2 = util.split_coin_pair(row[tdcols["pair"]], coins)
         coin1_amount = util.remove_non_float_chars(row[tdcols["executed"]])

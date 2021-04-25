@@ -62,15 +62,16 @@ def main():
     monthly_results = {}
     results = {}
     info = {}
-    monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
+    trans_fe, monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
         transaction_filepath)
     trade_fe, monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
         trade_filepath, info["Transaction History"]["Coins"])
 
     flow_events += trade_fe
+    flow_events += trans_fe
     util.sort_flow_events(flow_events)
-    for ev in flow_events:
-        print(ev)
+    # for ev in flow_events:
+    #     print(ev)
     create_portfolio_state(flow_events)
 
     if do_print_info:
