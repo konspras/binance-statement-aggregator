@@ -48,6 +48,7 @@ def weighted_average(rows, weight_key, target_key):
     tsum = 0
     wsum = 0
     for row in rows:
+        print(row)
         weight = float(remove_non_float_chars(row[weight_key]))
         tsum += float(row[target_key]) * weight
         wsum += weight
@@ -69,6 +70,11 @@ def sort_flow_events(flow_events):
 
 
 def split_coin_pair(pair, possible_coins):
+    # special cases... TODO: handle better
+    if pair == "BETHETH":
+        return 'BETH', 'ETH'
+    if pair == "ETHBETH":
+        return 'ETH', 'BETH'
     first, second = "", ""
     found = False
     for pcoin in possible_coins:

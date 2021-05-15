@@ -42,9 +42,9 @@ def print_info(res):
 def create_portfolio_state(flow_events):
     ps = PortfolioState()
     for event in flow_events:
-        ps.add_trade(event)
+        ps.add_event(event)
 
-    print(ps)
+    return ps
 
 # Profit by month in Portfolio state? Or Use a containgg class/code to extract per month
 # stats as the data is fed? Maybe the Position can split profits and fees by month and then
@@ -53,30 +53,53 @@ def create_portfolio_state(flow_events):
 
 def main():
     # TODO: CLI args
-    transaction_filepath = "transaction_history_2.csv"
+    transaction_filepath = "transaction_history_5.csv"
     order_filepath = "order_history.csv"
-    trade_filepath = "trade_history_fake.csv"
+    trade_filepath = "trade_history_4.csv"
     do_print_info = True
 
     flow_events = []
-    monthly_results = {}
+    # monthly_results = {}
     results = {}
     info = {}
-    trans_fe, monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
+    trans_fe, info["Transaction History"] = transp.process_transaction_history(
         transaction_filepath)
-    trade_fe, monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
-        trade_filepath, info["Transaction History"]["Coins"])
+    trade_fe, info["Trade History"] = tradep.process_trade_history(
+        trade_filepath)
+    # trans_fe, monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
+    #     transaction_filepath)
+    # trade_fe, monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
+    #     trade_filepath, info["Transaction History"]["Coins"])
 
     flow_events += trade_fe
     flow_events += trans_fe
     util.sort_flow_events(flow_events)
     # for ev in flow_events:
     #     print(ev)
-    create_portfolio_state(flow_events)
+    ps = create_portfolio_state(flow_events)
 
     if do_print_info:
         print_info(info)
-    print_monthly_results(monthly_results)
+    # print_monthly_results(monthly_results)
+    # bnb_price = ps.positions["BNB"].buy_price
+    # print(bnb_price)
+    # TODO: Must there be a price history?
+    # Does not make sense to calculate the cost of fees for example
+    # using an old price for BNB. Maybe it should convert BNB to BUSD as
+    # it processes trades based on current price. Yes.
+    print("")
+    print(ps)
+    print("BETH is not accounted for....")
+    april_profits = ps.profit("4/2021")
+    print(f"profit in april {april_profits} BUSD (only busd accounted)")
+    may_profits = ps.profit("5/2021")
+    print(f"profit in may {may_profits} BUSD (only busd accounted)")
+
+    months = ["4/2021", "5/2021"]
+    for month in months:
+        print(f"Fees for {month}: {ps.fees(month)}")
+
+    print(ps.mean_price("BNB"))
 
 
 if __name__ == "__main__":

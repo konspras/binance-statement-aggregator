@@ -8,12 +8,31 @@ trcols = {"account": "Account",
           }
 
 # trade history cols
+tdcols_0 = {"amount": "Amount",
+            "executed": "Executed",
+            "fee": "Fee",
+            "pair": "Pair",
+            "price": "Price",
+            "side": "Side",
+            "date": "\ufeffDate(UTC)"}  # tf?
+
 tdcols = {"amount": "Amount",
-          "executed": "Executed",
+          "executed": "Total",
           "fee": "Fee",
-          "pair": "Pair",
+          "fee coin": "Fee Coin",
+          "pair": "Market",
           "price": "Price",
-          "side": "Side",
-          "date": "\ufeffDate(UTC)"}  # tf?
+          "side": "Type",
+          "date": "Date(UTC)"}  # tf?
 
 base_coins = ["EUR", "BUSD", "USDT", "USDC"]
+
+default_coin = "BUSD"
+
+coins_used = ['EGLD', 'HOT', 'BAT', 'BUSD', 'ETH', 'LINK', 'LDEUR', 'TLM',
+              'EUR', 'BTC', 'ALICE', 'ENJ', 'DOT', 'ADA', 'BNB', 'BETH', 'ALPHA', 'SHIB']
+
+considered_transaction_ops = ["Deposit", "Withdraw", "Fee", "Savings Interest", "Launchpool Interest",
+                              "Buy", "POS savings interest", "Commission History", "Savings purchase",
+                              "Transaction Related", "Savings Principal redemption", "POS savings purchase",
+                              "IsolatedMargin loan", "BNB deducts fee", "POS savings redemption"]
