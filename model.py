@@ -108,7 +108,6 @@ class PortfolioState:
         res = f"{sell_asset}_{flow_event.buy_asset}"
         if not is_buy:
             res = f"{flow_event.buy_asset}_{sell_asset}"
-        print(res)
         return res
 
     def __position_key_from_asset(self, asset):
@@ -136,7 +135,6 @@ class Position:
         self.fees = {}  # month to coin to value
 
     def update_position(self, flow_event, op_type):
-        print(flow_event)
         if op_type == "base_distribution":
             # TODO add checks
             self.__check_valid_base_distribution(flow_event)
@@ -179,6 +177,8 @@ class Position:
         self.profit[month_year] += profit
 
     def __add_fees(self, flow_event):
+        if flow_event.fee_asset is None:
+            return
         month_year = util.get_month_year(flow_event.date)
         if month_year not in self.fees:
             self.fees[month_year] = {}

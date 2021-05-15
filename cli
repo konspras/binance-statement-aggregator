@@ -13,21 +13,9 @@ from pprint import pprint
 import util
 import trade_processor as tradep
 import transaction_processor as transp
+import eth_staking_processor as ethstp
 from cfg import trcols, tdcols
 from model import PortfolioState, Position, FlowEvent
-
-
-def print_monthly_results(res):
-    print("\n================= RESULTS =================")
-    for res_key in res:
-        print(f"\n\n>>>>>>>> {res_key} <<<<<<<<")
-        for month in res[res_key]:
-            print(f"\n>>>>>> {month}")
-            for data_key in res[res_key][month]:
-                values = res[res_key][month][data_key]
-                if len(values) > 0:
-                    print(f">> {data_key}")
-                    pprint(values)
 
 
 def print_info(res):
@@ -46,7 +34,7 @@ def create_portfolio_state(flow_events):
 
     return ps
 
-# Profit by month in Portfolio state? Or Use a containgg class/code to extract per month
+# TODO: Profit by month in Portfolio state? Or Use a containgg class/code to extract per month
 # stats as the data is fed? Maybe the Position can split profits and fees by month and then
 # provide methods to get ether monthly or aggregate views... Makes sense.
 
@@ -56,33 +44,30 @@ def main():
     transaction_filepath = "transaction_history_5.csv"
     order_filepath = "order_history.csv"
     trade_filepath = "trade_history_4.csv"
+    eth_stake_path = "eth_staking_1.csv"
+    beth_distr_path = "beth_distr_1.csv"
     do_print_info = True
 
     flow_events = []
-    # monthly_results = {}
-    results = {}
     info = {}
     trans_fe, info["Transaction History"] = transp.process_transaction_history(
         transaction_filepath)
     trade_fe, info["Trade History"] = tradep.process_trade_history(
         trade_filepath)
-    # trans_fe, monthly_results["Transaction History"], info["Transaction History"] = transp.process_transaction_history(
-    #     transaction_filepath)
-    # trade_fe, monthly_results["Trade History"], info["Trade History"] = tradep.process_trade_history(
-    #     trade_filepath, info["Transaction History"]["Coins"])
+    eth_stake_fe = ethstp.process_eth_staking(eth_stake_path, beth_distr_path)
 
     flow_events += trade_fe
     flow_events += trans_fe
+    flow_events += eth_stake_fe
     util.sort_flow_events(flow_events)
-    # for ev in flow_events:
-    #     print(ev)
+    for ev in flow_events:
+        print(ev)
+    print("---------------------------------------------------------------------------")
     ps = create_portfolio_state(flow_events)
 
     if do_print_info:
         print_info(info)
-    # print_monthly_results(monthly_results)
-    # bnb_price = ps.positions["BNB"].buy_price
-    # print(bnb_price)
+
     # TODO: Must there be a price history?
     # Does not make sense to calculate the cost of fees for example
     # using an old price for BNB. Maybe it should convert BNB to BUSD as

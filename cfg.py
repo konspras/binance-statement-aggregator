@@ -23,7 +23,18 @@ tdcols = {"amount": "Amount",
           "pair": "Market",
           "price": "Price",
           "side": "Type",
-          "date": "Date(UTC)"}  # tf?
+          "date": "Date(UTC)"}
+
+ethstcols = {"date": "Date",
+             "out": "Coin",
+             "in": "Token",
+             "amount": "Amount",
+             "status": "Status"}
+
+bethdstrcols = {"date": "Date",
+                "in": "Token",
+                "amount": "Amount",
+                "position": "Position"}
 
 base_coins = ["EUR", "BUSD", "USDT", "USDC"]
 
