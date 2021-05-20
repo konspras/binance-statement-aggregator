@@ -41,7 +41,8 @@ base_coins = ["EUR", "BUSD", "USDT", "USDC"]
 default_coin = "BUSD"
 
 coins_used = ['EGLD', 'HOT', 'BAT', 'BUSD', 'ETH', 'LINK', 'LDEUR', 'TLM',
-              'EUR', 'BTC', 'ALICE', 'ENJ', 'DOT', 'ADA', 'BNB', 'BETH', 'ALPHA', 'SHIB']
+              'EUR', 'BTC', 'ALICE', 'ENJ', 'DOT', 'ADA', 'BNB', 'BETH', 'ALPHA', 'SHIB',
+              'XTZ', 'AVAX', 'XRP']
 
 considered_transaction_ops = ["Deposit", "Withdraw", "Fee", "Savings Interest", "Launchpool Interest",
                               "Buy", "POS savings interest", "Commission History", "Savings purchase",

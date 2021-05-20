@@ -43,7 +43,7 @@ def main():
     # TODO: CLI args
     transaction_filepath = "transaction_history_5.csv"
     order_filepath = "order_history.csv"
-    trade_filepath = "trade_history_4.csv"
+    trade_filepath = "trade_history_6.csv"
     eth_stake_path = "eth_staking_1.csv"
     beth_distr_path = "beth_distr_1.csv"
     do_print_info = True

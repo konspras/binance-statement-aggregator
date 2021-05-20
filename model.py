@@ -215,7 +215,7 @@ class Position:
             buy_currency = "-"
         if self.buy_price is not None:
             buy_price = round(self.buy_price, 4)
-        return f"{amount :<12} {self.asset_name :<8} | Avg Price {buy_price :<10} {buy_currency :<6} - Invested: {round(self.invested,1):<10} | Profit ({self.buy_currency}){self.profit} | Fees {self.fees}"
+        return f"{amount :<12} {self.asset_name :<8} | Avg Price {buy_price :<10} {buy_currency :<6} | Profit ({self.buy_currency}){self.profit} | Fees {self.fees}"
 
 
 class FlowEvent:
