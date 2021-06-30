@@ -41,11 +41,11 @@ def create_portfolio_state(flow_events):
 
 def main():
     # TODO: CLI args
-    transaction_filepath = "transaction_history_5.csv"
-    order_filepath = "order_history.csv"
-    trade_filepath = "trade_history_6.csv"
-    eth_stake_path = "eth_staking_1.csv"
-    beth_distr_path = "beth_distr_1.csv"
+    datapath = "data"
+    transaction_filepath = f"{datapath}/transaction_history.csv"
+    trade_filepath = f"{datapath}/trade_history.csv"
+    eth_stake_path = f"{datapath}/Binance ETH Staking - Stake.csv"
+    beth_distr_path = f"{datapath}/Binance ETH Staking - Distribution.csv"
     do_print_info = True
 
     flow_events = []
@@ -75,12 +75,10 @@ def main():
     print("")
     print(ps)
     print("BETH is not accounted for....")
-    april_profits = ps.profit("4/2021")
-    print(f"profit in april {april_profits} BUSD (only busd accounted)")
-    may_profits = ps.profit("5/2021")
-    print(f"profit in may {may_profits} BUSD (only busd accounted)")
-
-    months = ["4/2021", "5/2021"]
+    print("Handle isolated margin in transaction processing")
+    months = ["4/2021", "5/2021", "6/2021"]
+    for month in months:
+        print(f"profit in {month}: {ps.profit(month)} BUSD (only busd accounted)")
     for month in months:
         print(f"Fees for {month}: {ps.fees(month)}")
 
