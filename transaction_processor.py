@@ -4,7 +4,7 @@ from dateutil import parser
 
 import util
 from cfg import trcols, base_coins, considered_transaction_ops, coins_used
-from model import FlowEvent
+from model import GenericEvent
 
 
 def calculate_sum_by_op(rows, op):
@@ -50,8 +50,8 @@ def extract_flow_events(rows, coins, known_ops):
         interest_ops = ["Launchpool Interest",
                         "Savings Interest", "POS savings interest", "Commission History"]
         if op in interest_ops:
-            flow_event = FlowEvent(date, coin,
-                                   None, None, change, None, None)
+            flow_event = GenericEvent(date, coin,
+                                      None, None, change, None, None)
         else:
             if op not in known_ops:
                 raise Exception(

@@ -9,21 +9,21 @@ trcols = {"account": "Account",
 
 # trade history cols
 tdcols = {"amount": "Amount",
-            "executed": "Executed",
-            "fee": "Fee",
-            "pair": "Pair",
-            "price": "Price",
-            "side": "Side",
-            "date": "ï»¿Date(UTC)"}  # tf?
+          "executed": "Executed",
+          "fee": "Fee",
+          "pair": "Pair",
+          "price": "Price",
+          "side": "Side",
+          "date": '\ufeffDate(UTC)'}  # tf?
 
 tdcols_1 = {"amount": "Amount",
-          "executed": "Total",
-          "fee": "Fee",
-          "fee coin": "Fee Coin",
-          "pair": "Market",
-          "price": "Price",
-          "side": "Type",
-          "date": "Date(UTC)"}
+            "executed": "Total",
+            "fee": "Fee",
+            "fee coin": "Fee Coin",
+            "pair": "Market",
+            "price": "Price",
+            "side": "Type",
+            "date": "Date(UTC)"}
 
 ethstcols = {"date": "Date",
              "out": "Coin",

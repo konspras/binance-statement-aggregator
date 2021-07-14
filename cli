@@ -15,7 +15,7 @@ import trade_processor as tradep
 import transaction_processor as transp
 import eth_staking_processor as ethstp
 from cfg import trcols, tdcols
-from model import PortfolioState, Position, FlowEvent
+from model import PortfolioState, Position, GenericEvent
 
 
 def print_info(res):
@@ -60,9 +60,9 @@ def main():
     flow_events += trans_fe
     flow_events += eth_stake_fe
     util.sort_flow_events(flow_events)
-    for ev in flow_events:
-        print(ev)
-    print("---------------------------------------------------------------------------")
+    # for ev in flow_events:
+    #     print(ev)
+    # print("---------------------------------------------------------------------------")
     ps = create_portfolio_state(flow_events)
 
     if do_print_info:
@@ -72,17 +72,16 @@ def main():
     # Does not make sense to calculate the cost of fees for example
     # using an old price for BNB. Maybe it should convert BNB to BUSD as
     # it processes trades based on current price. Yes.
-    print("")
     print(ps)
-    print("BETH is not accounted for....")
     print("Handle isolated margin in transaction processing")
     months = ["4/2021", "5/2021", "6/2021"]
     for month in months:
-        print(f"profit in {month}: {ps.profit(month)} BUSD (only busd accounted)")
+        print(
+            f"profit in {month}: {ps.profit(month)} BUSD")
     for month in months:
         print(f"Fees for {month}: {ps.fees(month)}")
-
-    print(ps.mean_price("BNB"))
+    for month in months:
+        print(f"Net profit for {month}: {ps.profit(month) - ps.fees(month)}")
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ from dateutil import parser
 
 import util
 from cfg import ethstcols, bethdstrcols, base_coins, coins_used
-from model import FlowEvent
+from model import GenericEvent
 
 
 def extract_stake_flow_events(rows):
@@ -17,8 +17,8 @@ def extract_stake_flow_events(rows):
         if in_coin != "BETH" or out_coin != "ETH":
             raise Exception(
                 f"Expected in: BETH, out: ETH - got in: {in_coin}, out {out_coin}")
-        fe = FlowEvent(date, in_coin, out_coin, None,
-                       amount_converted, amount_converted, None)
+        fe = GenericEvent(date, in_coin, out_coin, None,
+                          amount_converted, amount_converted, None)
         res.append(fe)
     return res
 
@@ -32,8 +32,8 @@ def extract_distr_flow_events(rows):
         if in_coin != "BETH":
             raise Exception(
                 f"Expected in: BETH - got in: {in_coin}")
-        fe = FlowEvent(date, in_coin, None, None,
-                       amount, None, None)
+        fe = GenericEvent(date, in_coin, None, None,
+                          amount, None, None)
         res.append(fe)
     return res
 

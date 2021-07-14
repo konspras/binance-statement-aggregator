@@ -1,14 +1,14 @@
 from pprint import pprint
 from dateutil import parser
 import util
-from model import FlowEvent
+from model import GenericEvent
 from cfg import tdcols, coins_used
 
 
 def extract_flow_events(rows, coins):
     res = []
     for row in rows:
-        print(row)
+        # print(row)
         date = parser.parse(row[tdcols["date"]])
         coin1, coin2 = util.split_coin_pair(row[tdcols["pair"]], coins)
 
@@ -36,8 +36,8 @@ def extract_flow_events(rows, coins):
             raise Exception(f"Fee coin {fee_asset} is not in {coins}")
         fee_amount = util.remove_non_float_chars(row[tdcols["fee"]])
         # fee_amount = row[tdcols["fee"]]
-        res.append(FlowEvent(date, buy_asset,
-                             sell_asset, fee_asset, buy_amount, sell_amount, fee_amount))
+        res.append(GenericEvent(date, buy_asset,
+                                sell_asset, fee_asset, buy_amount, sell_amount, fee_amount))
     return res
 
 
