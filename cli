@@ -74,7 +74,7 @@ def main():
     # it processes trades based on current price. Yes.
     print(ps)
     print("Handle isolated margin in transaction processing")
-    months = ["4/2021", "5/2021", "6/2021"]
+    months = ["4/2021", "5/2021", "6/2021", "7/2021"]
     for month in months:
         print(
             f"profit in {month}: {ps.profit(month)} BUSD")

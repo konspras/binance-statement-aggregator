@@ -39,24 +39,12 @@ class PortfolioState:
     def add_event(self, event):
         if not isinstance(event, GenericEvent):
             raise Exception(f"Event {event} is not a GenericEvent")
-        print(event)
         event = self.__convert_event(event)
-        print(event, type(event))
         if self.date is None or event.date > self.date:
             self.date = event.date
 
         pos = self.__create_position(event)
         pos.update_position(event)
-
-        # print("-----------")
-        # for pos in self.positions:
-        #     print(f"{self.positions[pos]}")
-        # if "ETH" in self.positions:
-        #     print(self.positions["ETH"])
-        #     if "BETH" in self.positions:
-        #         print(self.positions["BETH"])
-
-        #     print("^^^^^^^^^^")
 
     # TODO: Must extend to work with all stablecoins such taht any conversion to
     # a stablecoin is profit taking.
