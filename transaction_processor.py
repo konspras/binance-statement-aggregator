@@ -46,10 +46,14 @@ def extract_flow_events(rows, coins, known_ops):
         # TODO: ignoring transaction related. Eur to BUSD coversion totals will
         # not be the same in portfolio state as they are in the transaction proc results.
 
-        # Not counting sell, buy and fee twice
-        interest_ops = ["Launchpool Interest",
+        # Not counting sell, buy and fee here, but through trading data
+        interest_ops = ["Launchpool Interest", "Distribution"
                         "Savings Interest", "POS savings interest", "Commission History"]
-        if op in interest_ops:
+        deposit_ops = ["Deposit", "Withdraw"]
+        if op in deposit_ops:
+            flow_event = GenericEvent(
+                date, coin, None, None, change, None, None, is_deposit=True)
+        elif op in interest_ops:
             flow_event = GenericEvent(date, coin,
                                       None, None, change, None, None)
         else:

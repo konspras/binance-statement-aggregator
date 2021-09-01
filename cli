@@ -72,9 +72,9 @@ def main():
     # Does not make sense to calculate the cost of fees for example
     # using an old price for BNB. Maybe it should convert BNB to BUSD as
     # it processes trades based on current price. Yes.
-    print(ps)
-    print("Handle isolated margin in transaction processing")
-    months = ["4/2021", "5/2021", "6/2021", "7/2021"]
+    print("\n", ps)
+
+    months = ["4/2021", "5/2021", "6/2021", "7/2021", "8/2021"]
     for month in months:
         print(
             f"profit in {month}: {ps.profit(month)} BUSD")
@@ -82,6 +82,19 @@ def main():
         print(f"Fees for {month}: {ps.fees(month)}")
     for month in months:
         print(f"Net profit for {month}: {ps.profit(month) - ps.fees(month)}")
+
+    print(f"Total profit: {ps.profit()}")
+    print(f"Total fees: {ps.fees()}")
+    print(f"Total net profit: {ps.profit() - ps.fees()}")
+
+    print("\nTODO:")
+    print("Make sure that interest that is taken back after a redemption is accounted for.")
+    print("Handle isolated margin in transaction processing")
+    print("Invested is not working properly (BETH)")
+    print("Check if BUSD distribution works and counts as profit")
+    print("Withdrawal fees are not taken into account")
+    print("Some initial conversions from EUR to BUSD are not accounted for.. see old code")
+    print("I need to see the average price for BUSD")
 
 
 if __name__ == "__main__":
