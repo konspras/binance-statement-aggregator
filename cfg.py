@@ -1,5 +1,6 @@
 # transaction history colulmns
-trcols = {"account": "Account",
+trcols = {"User_ID": "User_ID",
+          "account": "Account",
           "change": "Change",
           "coin": "Coin",
           "operation": "Operation",
