@@ -37,6 +37,7 @@ def add_to_coin_value(op_to_coin, op, coin, value):
 
 def extract_flow_events(rows, coins, known_ops):
     res = []
+    ignored_events = []
     for row in rows:
         date = parser.parse(row[trcols["date"]])
         coin = row[trcols["coin"]]
@@ -45,9 +46,8 @@ def extract_flow_events(rows, coins, known_ops):
         flow_event = None
         # TODO: ignoring transaction related. Eur to BUSD coversion totals will
         # not be the same in portfolio state as they are in the transaction proc results.
-
         # Not counting sell, buy and fee here, but through trading data
-        interest_ops = ["Launchpool Interest", "Distribution"
+        interest_ops = ["Launchpool Interest", "Distribution",
                         "Savings Interest", "POS savings interest", "Commission History"]
         deposit_ops = ["Deposit", "Withdraw"]
         if op in deposit_ops:
@@ -59,10 +59,13 @@ def extract_flow_events(rows, coins, known_ops):
         else:
             if op not in known_ops:
                 raise Exception(
-                    f"Operation \"{op}\" not in known ops. Adapt code")
+                    f"Operation \"{op}\" not in known ops. Update known ops")
+            if op not in ignored_events:
+                ignored_events.append(op)
         if flow_event:
             res.append(flow_event)
-
+    print(
+        f"Transaction processor ignored the following event types:\n{ignored_events}")
     return res
 
 
@@ -110,5 +113,7 @@ def process_transaction_history(filepath):
     # consider "BNB deducts fee"
     flow_events = extract_flow_events(
         rows, coins_used, considered_transaction_ops)
+    print(
+        f"Transaction processor: data rows: {len(rows)} - events extracted: {len(flow_events)}")
     return flow_events, info
     # return flow_events, result, info

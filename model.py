@@ -59,7 +59,8 @@ class PortfolioState:
             elif isinstance(event, BuyEvent):
                 self.__remove_from_balance(
                     pos_secondary.asset_name, event.out_amount)
-
+            else:
+                raise Exception(f"Unknown event instance")
     # TODO: Must extend to work with all stablecoins such that any conversion to
     # a stablecoin is profit taking.
 

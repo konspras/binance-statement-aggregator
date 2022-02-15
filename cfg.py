@@ -43,7 +43,7 @@ default_coin = "BUSD"
 
 coins_used = ['EGLD', 'HOT', 'BAT', 'BUSD', 'ETH', 'LINK', 'LDEUR', 'TLM',
               'EUR', 'BTC', 'ALICE', 'ENJ', 'DOT', 'ADA', 'BNB', 'BETH', 'ALPHA', 'SHIB',
-              'XTZ', 'AVAX', 'XRP', 'SOL', 'ATA', 'SLP', 'XLM', 'MBOX']
+              'XTZ', 'AVAX', 'XRP', 'SOL', 'ATA', 'SLP', 'XLM', 'MBOX', 'DOGE']
 
 # Sell looks to be the same as Transaction Related
 considered_transaction_ops = ["Deposit", "Withdraw", "Fee", "Savings Interest", "Launchpool Interest",
