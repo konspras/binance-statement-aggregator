@@ -50,5 +50,5 @@ considered_transaction_ops = ["Deposit", "Withdraw", "Fee", "Savings Interest", 
                               "Buy", "POS savings interest", "Commission History", "Savings purchase",
                               "Transaction Related", "Savings Principal redemption", "POS savings purchase",
                               "IsolatedMargin loan", "BNB deducts fee", "POS savings redemption",
-                              "IsolatedMargin repayment", "Distribution", "Sell"
+                              "IsolatedMargin repayment", "Distribution", "Sell", "Small assets exchange BNB"
                               ]

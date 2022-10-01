@@ -77,7 +77,9 @@ def main():
 
     months = ["4/2021", "5/2021", "6/2021", "7/2021",
               "8/2021", "9/2021", "10/2021", "11/2021",
-              "12/2021", "1/2022", "2/2022"]
+              "12/2021", "1/2022", "2/2022", "3/2022",
+              "4/2022", "5/2022", "6/2022", "7/2022",
+              "8/2022", "9/2022"]
     # for month in months:
     #     print(
     #         f"profit in {month}: {ps.profit(month)} BUSD")
@@ -99,6 +101,7 @@ def main():
     print("Some initial conversions from EUR to BUSD are not accounted for.. see old code")
     print("I need to see the average price for BUSD")
     print("Add for each coin a figure of it's avg price trajectory along with the invested amount")
+    print("Check Small assets exchange BNB")
 
 
 if __name__ == "__main__":
